@@ -2,13 +2,29 @@ package edu.harvard.hms.dbmi.avillach.auth.security;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Random;
 
 public class PasswordUtils {
 
-	public static String calculatePasswordHash(String password) {
+	
+	public static byte[] getSalt() {
+        Random rand = new Random();
+        //this length must match the binary column in the DB
+        byte[] salt = new byte[16];
+        rand.nextBytes(salt);
+        return salt;
+	}
+	
+	public static String calculatePasswordHash(String password, byte[] salt) {
 		try {
+            
             // Create MessageDigest instance for MD5
-            MessageDigest md = MessageDigest.getInstance("MD5");
+            MessageDigest md= MessageDigest.getInstance("MD5");
+            
+            if(salt != null && salt.length > 0) {
+            	md.update(salt);
+            }
+            
             //Add password bytes to digest
             md.update(password.getBytes());
             //Get the hash's bytes 
@@ -30,6 +46,5 @@ public class PasswordUtils {
 		//shouldn't get here
 		return null;
 	}
-
 	
 }

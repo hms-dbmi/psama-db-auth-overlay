@@ -1,9 +1,9 @@
-define(['common/session', 'picSure/settings', 'common/searchParser', 'jquery', 'handlebars', 'text!login/login.hbs', 'text!login/not_authorized.hbs', 'overrides/login', 'util/notification', 'login/fence_login'],
-		function(session, settings, parseQueryString, $, HBS, loginTemplate, notAuthorizedTemplate, overrides, notification, fenceLogin){
+define(['common/session', 'picSure/settings', 'jquery', 'handlebars', 'text!login/login.hbs', 'text!login/not_authorized.hbs', 'overrides/login', 'util/notification'],
+		function(session, settings, $, HBS, loginTemplate, notAuthorizedTemplate, overrides, notification){
 
 	var loginTemplate = HBS.compile(loginTemplate);
 
-	var login = {
+	return {
 		showLoginPage : function(){
 		    console.log("Auth0-showLoginPage()");
 		    
@@ -14,9 +14,6 @@ define(['common/session', 'picSure/settings', 'common/searchParser', 'jquery', '
             overrides.postRender ? overrides.postRender.apply(this) : undefined;
             
             $("#loginButton").on("click", function(){
-            	console.log("llee");
-            	username = 
-            	
             	  $.ajax({
                       url: '/psama/authentication',
                       type: 'post',
@@ -27,7 +24,10 @@ define(['common/session', 'picSure/settings', 'common/searchParser', 'jquery', '
                       contentType: 'application/json',
                       success: function(data){
                           session.authenticated(data.userId, data.token, data.email, data.permissions, data.acceptedTOS, this.handleNotAuthorizedResponse);
-                          if (data.acceptedTOS !== 'true'){
+                          console.log("must change is " + data.mustChangePassword);
+                          if (data.mustChangePassword == 'true'){
+                        	  history.pushState({}, "", "/psamaui/userProfile");
+                          } else if (data.acceptedTOS !== 'true'){
                               history.pushState({}, "", "/psamaui/tos");
                           } else {
                               if (sessionStorage.redirection_url) {
@@ -39,7 +39,7 @@ define(['common/session', 'picSure/settings', 'common/searchParser', 'jquery', '
                           }
                       }.bind(this),
                       error: function(data){
-                          notification.showFailureMessage("Failed to authenticate with provider. Try again or contact administrator if error persists.")
+                          notification.showFailureMessage("Invalid username/Password combination. Try again or contact administrator if error persists.")
                           history.pushState({}, "", sessionStorage.not_authorized_url? sessionStorage.not_authorized_url : "/psamaui/not_authorized?redirection_url=/picsureui");
                       }
                   });
@@ -69,5 +69,4 @@ define(['common/session', 'picSure/settings', 'common/searchParser', 'jquery', '
                 $('#main-content').html(HBS.compile(notAuthorizedTemplate)({helpLink:settings.helpLink}));
         }
     };
-	return settings.idp_provider == "fence" ? fenceLogin : login;
 });

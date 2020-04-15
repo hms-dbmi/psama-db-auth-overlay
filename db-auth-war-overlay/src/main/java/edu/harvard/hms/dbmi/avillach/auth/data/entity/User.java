@@ -72,6 +72,7 @@ public class User extends BaseEntity implements Serializable, Principal {
 	private String token;
 	
 	@OneToOne
+	@ManyToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name = "credentialId")
 	private Credential credential;
 	

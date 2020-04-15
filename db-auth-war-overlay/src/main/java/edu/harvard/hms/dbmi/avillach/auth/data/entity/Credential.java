@@ -31,6 +31,13 @@ public class Credential extends BaseEntity implements Serializable {
 	@Column(name = "created_on")
 	@Type(type = "date")
 	private Date acceptedTOS;
+	
+	
+	@Column(name = "salt", columnDefinition = "BINARY(16)")
+	private byte[] salt;
+	
+	@Column(name = "is_expired")
+	private Boolean isExpired;
 
 	
 	
@@ -48,6 +55,22 @@ public class Credential extends BaseEntity implements Serializable {
 
 	public void setAcceptedTOS(Date acceptedTOS) {
 		this.acceptedTOS = acceptedTOS;
+	}
+
+	public byte[] getSalt() {
+		return salt;
+	}
+
+	public void setSalt(byte[] salt) {
+		this.salt = salt;
+	}
+
+	public Boolean isExpired() {
+		return isExpired;
+	}
+
+	public void setExpired(Boolean isExpired) {
+		this.isExpired = isExpired;
 	}
 	
 	
