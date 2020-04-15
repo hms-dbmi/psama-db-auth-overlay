@@ -140,7 +140,7 @@ public class UserService extends BaseEntityService<User> {
         		Credential credential = new Credential();
         		credential.setPassword(passwordHash);
         		credential.setSalt(salt);
-        		credential.setExpired(false);
+        		credential.setExpired(true);
             	
         		user.setCredential(credential);
         		//let this password pass through to the entity interceptor that generates the access email
