@@ -4,6 +4,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Random;
 
+import org.apache.commons.lang3.RandomStringUtils;
+
 public class PasswordUtils {
 
 	
@@ -46,5 +48,5 @@ public class PasswordUtils {
 		//shouldn't get here
 		return null;
 	}
-	
+
 }

@@ -1,12 +1,15 @@
-define(['common/session', 'picSure/settings', 'jquery', 'handlebars', 'text!login/login.hbs', 'text!login/not_authorized.hbs', 'overrides/login', 'util/notification'],
-		function(session, settings, $, HBS, loginTemplate, notAuthorizedTemplate, overrides, notification){
+define(['common/session', 'picSure/settings', 'common/searchParser', 'jquery', 'handlebars', 'text!login/login.hbs', 'text!login/not_authorized.hbs', 'overrides/login', 'util/notification'],
+		function(session, settings, parseQueryString, $, HBS, loginTemplate, notAuthorizedTemplate, overrides, notification){
 
 	var loginTemplate = HBS.compile(loginTemplate);
 
 	return {
 		showLoginPage : function(){
-		    console.log("Auth0-showLoginPage()");
+		    console.log("showLoginPage - DB()");
 		    
+		    var queryObject = parseQueryString();
+            if (queryObject.redirection_url) sessionStorage.redirection_url = queryObject.redirection_url.trim();
+            
 		    //Attach ajax /authentication call to login form
 		    
 		    $('#main-content').html(loginTemplate());

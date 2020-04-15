@@ -152,6 +152,7 @@ public class AuthenticationService  {
 		
 		credential.setPassword(passwordHash);
 		credential.setSalt(salt);
+		credential.setExpired(false);
 		
 		List<User> users = new ArrayList<User>();
 		users.add(user);

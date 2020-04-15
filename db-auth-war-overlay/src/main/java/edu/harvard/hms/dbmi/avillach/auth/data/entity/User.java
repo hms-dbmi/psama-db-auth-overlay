@@ -76,6 +76,12 @@ public class User extends BaseEntity implements Serializable, Principal {
 	@JoinColumn(name = "credentialId")
 	private Credential credential;
 	
+	/**
+	 * This is just so we can pass the password to the access email 
+	 */
+	@Transient
+	 private String initialPassword;
+	
 	public String getSubject() {
 		return subject;
 	}
@@ -350,5 +356,13 @@ public class User extends BaseEntity implements Serializable, Principal {
 
 	public void setCredential(Credential credential) {
 		this.credential = credential;
+	}
+
+	public String getInitialPassword() {
+		return initialPassword;
+	}
+
+	public void setInitialPassword(String initialPassword) {
+		this.initialPassword = initialPassword;
 	}
 }
