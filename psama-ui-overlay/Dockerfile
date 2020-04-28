@@ -1,4 +1,4 @@
-FROM dbmi/pic-sure-auth-ui:LATEST as psama-ui
+FROM hms-dbmi/pic-sure-auth-ui:LATEST as psama-ui
 FROM httpd:2.4.27-alpine
 
 
