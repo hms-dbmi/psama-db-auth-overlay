@@ -48,6 +48,21 @@ define(['common/session', 'picSure/settings', 'common/searchParser', 'jquery', '
                   });
             	  
             })
+            
+            //add some enter button handlers for convenience
+            $('#userInput').keypress(function(event){
+                var keycode = (event.keyCode ? event.keyCode : event.which);
+                if(keycode == '13'){
+                    $("#passInput").focus();  
+                }
+            });
+            
+            $('#passInput').keypress(function(event){
+                var keycode = (event.keyCode ? event.keyCode : event.which);
+                if(keycode == '13'){
+                    $("#loginButton").click();  
+                }
+            });
 		},
 		
         handleNotAuthorizedResponse : function () {
