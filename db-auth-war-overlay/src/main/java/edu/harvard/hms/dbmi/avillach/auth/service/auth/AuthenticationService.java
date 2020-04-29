@@ -73,9 +73,9 @@ public class AuthenticationService  {
 		}
 
 		Credential credential = user.getCredential();
-		logger.info("Stored cred" + credential);
+		logger.info("Stored cred " + credential);
 		if (credential != null) {
-			logger.info("pass" + credential.getPassword());
+			logger.info("pass " + credential.getPassword());
 		}
 
 		byte[] salt = credential.getSalt();
@@ -92,6 +92,7 @@ public class AuthenticationService  {
 		logger.info("hash " + passwordHash);
 
 		if (passwordHash == null || !passwordHash.equals(credential.getPassword())) {
+			System.out.println("invalid password '" + password + "'");
 			throw new NotAuthorizedException("invalid password for user " + username);
 		}
 
