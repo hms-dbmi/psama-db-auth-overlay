@@ -79,9 +79,15 @@ public class AuthenticationService  {
 		}
 
 		byte[] salt = credential.getSalt();
-		for(byte b : salt) {
-			System.out.println(Integer.toHexString(b));
+		if(salt != null) {
+			for(byte b : salt) {
+				System.out.println(Integer.toHexString(b));
+			}
+		} else {
+			System.out.println("no salt");
 		}
+		
+		
 		String passwordHash = PasswordUtils.calculatePasswordHash(password, salt);
 		logger.info("hash " + passwordHash);
 
