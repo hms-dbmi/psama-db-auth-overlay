@@ -1,4 +1,9 @@
 <div id="new-user-signup-form">
+        <select id="new-user-connection-dropdown" display="hidden">
+                {{#each connections}}
+                        <option value="{{this.id}}" selected>{{this.label}}</option>
+                {{/each}}
+        </select>
 	<div id="current-connection-form" class="container">
 	</div>
 </div>

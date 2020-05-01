@@ -1,3 +1,5 @@
+USE auth;
+
 alter table user add column credentialId binary(16) DEFAULT NULL;
 
 create table credential(
@@ -8,3 +10,5 @@ create table credential(
         is_expired bit(1)
         );
 
+
+insert into connection values (unhex(REPLACE(UUID(), "-", "")), "Local Database Authentication", "Email", "", '[{"label":"Email Address", "id":"email"}]');
