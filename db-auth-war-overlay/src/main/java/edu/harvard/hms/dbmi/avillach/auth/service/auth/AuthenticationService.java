@@ -11,6 +11,7 @@ import javax.ws.rs.core.SecurityContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import edu.harvard.dbmi.avillach.util.exception.ApplicationException;
 import edu.harvard.dbmi.avillach.util.exception.ProtocolException;
 import edu.harvard.dbmi.avillach.util.response.PICSUREResponse;
 import edu.harvard.hms.dbmi.avillach.auth.data.entity.Credential;
@@ -19,7 +20,6 @@ import edu.harvard.hms.dbmi.avillach.auth.data.repository.RoleRepository;
 import edu.harvard.hms.dbmi.avillach.auth.data.repository.UserRepository;
 import edu.harvard.hms.dbmi.avillach.auth.rest.UserService;
 import edu.harvard.hms.dbmi.avillach.auth.security.PasswordUtils;
-import edu.harvard.hms.dbmi.avillach.auth.service.BaseEntityService;
 import edu.harvard.hms.dbmi.avillach.auth.service.MailService;
 import edu.harvard.hms.dbmi.avillach.auth.service.TOSService;
 import edu.harvard.hms.dbmi.avillach.auth.utils.AuthUtils;
@@ -73,23 +73,9 @@ public class AuthenticationService  {
 		}
 
 		Credential credential = user.getCredential();
-		logger.info("Stored cred " + credential);
-		if (credential != null) {
-			logger.info("pass " + credential.getPassword());
-		}
-
 		byte[] salt = credential.getSalt();
-		if(salt != null) {
-			for(byte b : salt) {
-				System.out.println(Integer.toHexString(b));
-			}
-		} else {
-			System.out.println("no salt");
-		}
-		
 		
 		String passwordHash = PasswordUtils.calculatePasswordHash(password, salt);
-		logger.info("hash " + passwordHash);
 
 		if (passwordHash == null || !passwordHash.equals(credential.getPassword())) {
 			System.out.println("invalid password '" + password + "'");
@@ -118,10 +104,11 @@ public class AuthenticationService  {
 		logger.info("attempt to update password");
 		String username = passwordChangeRequest.get("username");
 		String password = passwordChangeRequest.get("oldPass");
+		String newPass = passwordChangeRequest.get("newPass");
 
 		if (username == null || password == null || username.isEmpty() || password.isEmpty())
 			throw new ProtocolException("Missing Username or password in request body.");
-
+		
 		// Do we have this user already?
 		User user = userRepo.findBySubject(username);
 		if (user == null) {
@@ -133,7 +120,7 @@ public class AuthenticationService  {
 		if (credential != null) {
 			logger.info("pass" + credential.getPassword());
 		}
-
+		
 		byte[] salt = credential.getSalt();
 		String passwordHash = PasswordUtils.calculatePasswordHash(password, salt);
 		logger.info("hash " + passwordHash);
@@ -142,12 +129,13 @@ public class AuthenticationService  {
 			throw new NotAuthorizedException("invalid password for user " + username);
 		}
 		
-		
+		//force password change
+		if (newPass.equals(password)) {
+			throw new ApplicationException("Cannot reuse passwords");
+		}
 
 		//update!
 		
-		String newPass = passwordChangeRequest.get("newPass");
-
 		salt = PasswordUtils.getSalt();
 		
 		for(byte b : salt) {
