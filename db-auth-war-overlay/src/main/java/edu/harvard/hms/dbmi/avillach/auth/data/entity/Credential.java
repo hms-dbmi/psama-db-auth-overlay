@@ -30,7 +30,7 @@ public class Credential extends BaseEntity implements Serializable {
 	
 	@Column(name = "created_on")
 	@Type(type = "date")
-	private Date acceptedTOS;
+	private Date createdOn;
 	
 	
 	@Column(name = "salt", columnDefinition = "BINARY(16)")
@@ -49,12 +49,12 @@ public class Credential extends BaseEntity implements Serializable {
 		this.password = password;
 	}
 
-	public Date getAcceptedTOS() {
-		return acceptedTOS;
+	public Date getCreatedOn() {
+		return createdOn;
 	}
 
-	public void setAcceptedTOS(Date acceptedTOS) {
-		this.acceptedTOS = acceptedTOS;
+	public void setCreatedOn(Date createdOn) {
+		this.createdOn = createdOn;
 	}
 
 	public byte[] getSalt() {
