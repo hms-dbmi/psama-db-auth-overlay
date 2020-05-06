@@ -1,5 +1,5 @@
 <div id="user-profile">
-    <div class="bordered-block">
+    <div id="tokenBlock" class="bordered-block">
         Token:
         <button id="user-token-copy-button" type="button" class="btn-small btn-success" uuid="{{user.uuid}}" style="border-radius: 4px;">COPY</button>
         <button id="user-token-reveal-button" type="button" class="btn-small btn-info" uuid="{{user.uuid}}" style="border-radius: 4px;">REVEAL</button>
@@ -10,13 +10,13 @@
         <b></b>
     </div>
 
-    <div class="bordered-block">
+    <div id="emailBlock" class="bordered-block">
         Email:<br>
         <input uuid="{{user.uuid}}" type="text" name="user_email" style="width: 100%;" required readonly disabled value="{{user.email}}">
         <br>
     </div>
     
-     <div class="bordered-block">
+     <div id="passwordBlock" class="bordered-block">
      Change Password: <br/>
      
      <div class="col-md-3" style="padding:  0px;"> Old Password: </div><div class="col-md-9"><input type="password" id="oldPassInput" /></div></br>

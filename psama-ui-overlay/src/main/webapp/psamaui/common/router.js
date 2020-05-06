@@ -44,7 +44,6 @@ define(["common/searchParser", "backbone", "common/session", "login/login", 'hea
                 if (!session.acceptedTOS() && name !== 'displayTOS'){
                     history.pushState({}, "", "/psamaui/tos");
                 } else if (session.mustChangePassword() && name !== 'showUserProfileHeader'){
-                	console.log('name ' + name);
               	  	history.pushState({}, "", "/psamaui/userProfile");
                 }
                 else if (callback) {

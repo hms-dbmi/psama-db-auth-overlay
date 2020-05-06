@@ -27,6 +27,9 @@ define(["handlebars", 'common/session', "picSure/userFunctions", "text!options/m
         	    	//update session to avoid showing this dialog again
         	    	session.setChangedPW();
         	    	
+        	    	userFunctions.refreshUserLongTermToken(this, function(){
+        	    		console.log("updated token");
+        	    	});
                 }.bind(this),
                 error: function(data){
                 	message = "Failed to update password. Try again or contact administrator if error persists.";
@@ -60,6 +63,7 @@ define(["handlebars", 'common/session', "picSure/userFunctions", "text!options/m
 					  	titleStr = "User Profile";
 					  	if(session.mustChangePassword()) {
 					  		titleStr = "Please Change Password";
+					  		$("#tokenBlock").hide();
 					  	}
 		                
 					  	$("#modal-window").html(this.modalTemplate({title: titleStr}));
@@ -69,8 +73,23 @@ define(["handlebars", 'common/session', "picSure/userFunctions", "text!options/m
 		                $("#user-token-refresh-button").click(baseClass.refreshToken);
 		                $('#user-token-reveal-button').click(baseClass.revealToken);
 		                $("#change-password-button").click(this.updatePassword);
-		                $('.close').click(baseClass.closeDialog);
+		                
+		                //if it's a non-admin user, redirect back to main UI when closed
+		                if(window.location.href.endsWith("userProfile")){
+		                	$('.close').click(function(){
+		                		window.location = "/picsureui/";
+		                	});
+		                } else {
+		                	$('.close').click(baseClass.closeDialog);
+		                }
+		                
 		                $('#confirmPassInput').on('input', this.matchInputs);
+		                
+		                //hide the token buttons if we need to change the password; it's unnecessary to show
+		                if(session.mustChangePassword()) {
+					  		$("#tokenBlock").hide();
+					  	}
+		                
 		            }.bind(this));
 			}.bind(this),
 	    };
