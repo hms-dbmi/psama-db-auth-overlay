@@ -18,11 +18,14 @@
     
      <div class="bordered-block">
      Change Password: <br/>
-     Old Password: <input type="password" id="oldPassInput" /><br/>
-     New Password: <input type="password" id="newPassInput" /><br/>
-     Confirm Password: <input type="password" id="confirmPassInput" /><br/>
      
-     <button id="change-password-button" type="button" class="btn-small btn-success" uuid="{{user.uuid}}" style="border-radius: 4px;">CHANGE PASSWORD</button>
+     <div class="col-md-3" style="padding:  0px;"> Old Password: </div><div class="col-md-9"><input type="password" id="oldPassInput" /></div></br>
+     <div class="col-md-3" style="padding:  0px;"> New Password: </div><div class="col-md-9"><input type="password" id="newPassInput" /></div></br>
+     <div class="col-md-3" style="padding:  0px;"> Confirm Password: </div><div class="col-md-9"><input type="password" id="confirmPassInput" /></div></br>
+     
+      <div class="col-md-3" style="padding:  0px;"> </div><div id="passwordMessage" class="col-md-9"></div></br>
+     
+     <button id="change-password-button" type="button" class="btn-small btn-success" uuid="{{user.uuid}}" style="border-radius: 4px;" disabled='true'>CHANGE PASSWORD</button>
        
      </div>
 </div>

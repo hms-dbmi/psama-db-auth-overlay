@@ -26,7 +26,7 @@ define(['common/session', 'picSure/settings', 'common/searchParser', 'jquery', '
                       }),
                       contentType: 'application/json',
                       success: function(data){
-                          session.authenticated(data.userId, data.token, data.email, data.permissions, data.acceptedTOS, this.handleNotAuthorizedResponse);
+                          session.authenticated(data.userId, data.token, data.email, data.permissions, JSON.parse(data.acceptedTOS), JSON.parse(data.mustChangePassword), this.handleNotAuthorizedResponse);
                           console.log("must change is " + data.mustChangePassword);
                           if (data.mustChangePassword == 'true'){
                         	  history.pushState({}, "", "/psamaui/userProfile");
@@ -42,7 +42,13 @@ define(['common/session', 'picSure/settings', 'common/searchParser', 'jquery', '
                           }
                       }.bind(this),
                       error: function(data){
-                          notification.showFailureMessage("Invalid username/Password combination. Try again or contact administrator if error persists.")
+                    	  message = "Unable to authenticate. Try again or contact administrator if error persists.";
+                    	  
+                    	  if(data.responseJSON.errorType == "application_error" && data.responseJSON.message){
+                    		message = data.responseJSON.message;  
+                    	  }
+                    		  
+                          notification.showFailureMessage(message);
                           history.pushState({}, "", sessionStorage.not_authorized_url? sessionStorage.not_authorized_url : "/psamaui/not_authorized?redirection_url=/picsureui");
                       }
                   });
@@ -80,7 +86,7 @@ define(['common/session', 'picSure/settings', 'common/searchParser', 'jquery', '
             }
         },
         displayNotAuthorized : function () {
-            console.log("Auth0-displayNotAuthorized()");
+            console.log("DB-displayNotAuthorized()");
             if (overrides.displayNotAuthorized)
                 overrides.displayNotAuthorized()
             else

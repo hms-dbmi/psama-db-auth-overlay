@@ -116,14 +116,9 @@ public class AuthenticationService  {
 		}
 
 		Credential credential = user.getCredential();
-		logger.info("Stored cred" + credential);
-		if (credential != null) {
-			logger.info("pass" + credential.getPassword());
-		}
 		
 		byte[] salt = credential.getSalt();
 		String passwordHash = PasswordUtils.calculatePasswordHash(password, salt);
-		logger.info("hash " + passwordHash);
 
 		if (passwordHash == null || !passwordHash.equals(credential.getPassword())) {
 			throw new NotAuthorizedException("invalid password for user " + username);
@@ -148,6 +143,7 @@ public class AuthenticationService  {
 		credential.setPassword(passwordHash);
 		credential.setSalt(salt);
 		credential.setExpired(false);
+		credential.setCreatedOn(new Date());
 		
 		List<User> users = new ArrayList<User>();
 		users.add(user);
