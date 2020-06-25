@@ -21,9 +21,11 @@ define(["handlebars", 'common/session', "picSure/userFunctions", "text!options/m
                 success: function(data){
                     notification.showSuccessMessage("password successfully changed");
                     $("#oldPassInput").val("");
-        	    	$("#newPassInput").val("");
-        	    	$("#confirmPassInput").val("");
+		        	    $("#newPassInput").val("");
+		        	    	$("#confirmPassInput").val("");	
         	    	
+		        	    	$("#modalDialog").hide();
+		        	    	
         	    	//update session to avoid showing this dialog again
         	    	session.setChangedPW();
         	    	
